@@ -1,0 +1,12 @@
+  def game_logic(self, keys, newkeys, mouse_pos, newclicks):
+        # collect actions for alerts
+        alerts_actions = []
+        for a in self.alerts:
+            alert_actions = a.game_logic(keys, newkeys, mouse_pos, newclicks)
+            for action in alert_actions:
+                if action is not None:
+                    alerts_actions.append(action)
+        for action in alerts_actions:
+            # if the alert expired, remove it
+            if action[0] == ALERT_EXP_MESSAGE:
+                self.alerts.remove(action[1])
