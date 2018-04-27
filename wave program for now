@@ -1,0 +1,15 @@
+self.waves = [None]
+        # je definis les vagues d'enemies
+        num_waves = int(fin[0])
+        fin = fin[1:num_waves+1]
+        for line in fin:
+            wave = []
+            for c in self.enemy_types:
+                wave.append(0)
+            line = line.split()
+            mod = float(line[0])
+            line = line[1:]
+            for identifier in line:
+                enemy_number = self.get_enemy_number(identifier)
+                wave[enemy_number] += 1
+            self.waves.append((mod, wave))
