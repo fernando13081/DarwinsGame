@@ -13,3 +13,16 @@ self.waves = [None]
                 enemy_number = self.get_enemy_number(identifier)
                 wave[enemy_number] += 1
             self.waves.append((mod, wave))
+            # je "spawn" les enemies
+  x, y = self.world.get_start()
+        mod = self.waves[self.wave][0]
+        wave = self.waves[self.wave][1]
+        for i in range(Enemy_COUNT):
+            for j in range(wave[i]):
+                c = self.enemy_types[i]((0, 0))
+                c.set_mod(mod)
+                x -= c.get_width() + Enemy_GAP
+                c.set_position((x, y))
+                destinations = [self.world.get_start()] + self.world.get_waypoints()
+                c.set_destinations(destinations)
+                self.enemy.add(c)
