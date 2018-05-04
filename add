@@ -1,0 +1,5 @@
+var incliquable = [document.getElementById("1"),document.getElementById("2"),document.getElementById("21"),document.getElementById("22"),document.getElementById("23"),document.getElementById("24"),document.getElementById("25"),document.getElementById("26"),document.getElementById("27"),document.getElementById("54"),document.getElementById("55"),document.getElementById("56"),document.getElementById("57"),document.getElementById("58"),document.getElementById("59"),document.getElementById("60"),document.getElementById("80"),document.getElementById("70")];
+		if (incliquable.indexOf(element) >= 0) {
+		element.style.cursor = 'not-allowed';
+		element.style['pointer-events'] = 'none';
+		}
