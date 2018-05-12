@@ -278,19 +278,19 @@ function drawMap() {
     document.body.appendChild(bouttonpourcommencer);
 
     //boutton pour réinitialiser le jeu
-    var resetbutton = document.createElement("div");
-    resetbutton.setAttribute("id", "resetbutton");
-    resetbutton.setAttribute("class", "resetbutton");
-    resetbutton.innerHTML = "<p> Recommencer! </p>";
-    evenement(resetbutton, "click", resetwave);
-    document.body.appendChild(resetbutton);
+    var bouttonpourreinitialiser = document.createElement("div");
+    bouttonpourreinitialiser.setAttribute("id", "bouttonpourreinitialiser");
+    bouttonpourreinitialiser.setAttribute("class", "bouttonpourreinitialiser");
+    bouttonpourreinitialiser.innerHTML = "<p> Recommencer! </p>";
+    evenement(bouttonpourreinitialiser, "click", resetwave);
+    document.body.appendChild(bouttonpourreinitialiser);
 
     //barre avec le score/les points... du joueur 
-    var statusbar = document.createElement("div");
-    statusbar.setAttribute("id", "statusbar");
-    statusbar.setAttribute("class", "statusbar");
-    statusbar.innerHTML = '<p> Points: <span id="pointsobt">0</span> Score: <span id="score">0</span> Wave: <span id="wave">0</span> Lives: <span id="lives">0</span></p>';
-    document.body.appendChild(statusbar);
+    var infosdujoueur = document.createElement("div");
+    infosdujoueur.setAttribute("id", "infosdujoueur");
+    infosdujoueur.setAttribute("class", "infosdujoueur");
+    infosdujoueur.innerHTML = '<p> Points: <span id="pointsobt">0</span> Score: <span id="score">0</span> Wave: <span id="wave">0</span> Lives: <span id="lives">0</span></p>';
+    document.body.appendChild(infosdujoueur);
   }
   
 //FIN DU CODE POUR LA CREATION DE L'ENVIRONNEMENT
@@ -300,11 +300,11 @@ function debutdelavague(evt) {
   if (jeuenroute) return;
   jeuenroute = true;
 
-  // make the pause button visible
+  //code pour que le boutton "Pause" soit visible
   var sb = document.getElementById("bouttonpourcommencer");
   sb.innerHTML = "<p> Pause </p>";
   evenement(sb, "click", pausewave);
-  // reset globals	
+  //reinitialisation du jeu	
   vagues = 0;
   vies = 10;
   pointsactuels = 20;
@@ -312,45 +312,45 @@ function debutdelavague(evt) {
   positioncanon.length = 0;
   nombredecanons = 0;
 
-  // increase the wave count
+  //augmenter le nombre de vagues
   vagues++;
 
-  // remove all the placed turrets
-  var turrets = document.querySelectorAll(".deplacementcanon");
-  for (var i = 0; i < turrets.length; i++) {
-    document.body.removeChild(turrets[i]);
+  //supprimer tous les canons placés
+  var canons = document.querySelectorAll(".deplacementcanon");
+  for (var i = 0; i < canons.length; i++) {
+    document.body.removeChild(canons[i]);
   }
 
-  // create all our minions
+  //créer tous les animaux
   for (var i = 0; i < nombredanimaux; i++) {
-    var minion = document.createElement("div");
-    minion.setAttribute("id", "minion" + i);
-    minion.setAttribute("class", "minion");
-    document.body.appendChild(minion);
+    var animal = document.createElement("div");
+    animal.setAttribute("id", "animal" + i);
+    animal.setAttribute("class", "animal");
+    document.body.appendChild(animal);
   }
 
-  // set up the timers to run
+  //faire en sorte que le minuteur marche
   var movex = new Array();
   var movey = new Array();
-  // what direction are we going?
+  //la direction
   var currentDir = new Array();
   var minion_c = 1;
-  var minion_release = new Array();
-  var minion_hp = new Array();
-  var first_kill = new Array();
+  var lachementdanimaux = new Array();
+  var hpdunanimal = new Array();
+  var premiermeurtre = new Array();
   var minions_killed = 0;
-  var lives_lost = 0;
+  var viesperdues = 0;
   var wave_over = false;
-  // get all the minions available
-  var minions = document.getElementsByClassName("minion");
-  for (var i = 0; i < minions.length; i++) {
+  //faire en sorte que tous les animaux soient disponibles
+  var animaux = document.getElementsByClassName("animal");
+  for (var i = 0; i < animaux.length; i++) {
     movex[i] = 0;
     movey[i] = 0;
     currentDir[i] = SUD;
-    minion_release[i] = 0;
-    minions[i].style.display = "none";
-    minion_hp[i] = minionhp();
-    first_kill[i] = true;
+    lachementdanimaux[i] = 0;
+    animaux[i].style.display = "none";
+    hpdunanimal[i] = minionhp();
+    premiermeurtre[i] = true;
   }
   intervalle = setInterval(function() {
     if (!jeuenpause) {
@@ -360,19 +360,19 @@ function debutdelavague(evt) {
 
         if (currentDir[i] == FINMOUV) {
           // lose a life, one escaped!
-          if (minions[i].style.display != "none") {
+          if (animaux[i].style.display != "none") {
             vies--;
-            lives_lost++;
+            viesperdues++;
           }
           // we have reached the end of the map
-          minions[i].style.display = "none";
+          animaux[i].style.display = "none";
           if (vies == 0) {
             // game over
             wave_over = true;
             break;
           }
           // do we have minions killed?
-          if (minions_killed == (minions.length - lives_lost)) {
+          if (minions_killed == (animaux.length - viesperdues)) {
             // wave over!
             wave_over = true;
           }
@@ -393,34 +393,34 @@ function debutdelavague(evt) {
             movex[i] -= 1;
             break;
         }
-        minions[i].style.display = "block";
-        minions[i].style.top = movey[i] + "px";
-        minions[i].style.left = movex[i] + "px";
+        animaux[i].style.display = "block";
+        animaux[i].style.top = movey[i] + "px";
+        animaux[i].style.left = movex[i] + "px";
 
-        // are there any turrets in range?
-        var damage = anyTurretsInRange(minions[i], movex[i], movey[i]);
-        // reduce the minion's hit points by the damage
-        minion_hp[i] -= damage;
-        if (minion_hp[i] <= 0) {
-          // goodbye minion!
-          if (first_kill[i]) {
-            first_kill[i] = false;
+        //code pour voir si certains canons sont assez proche 
+        var degats = canonsprochesoupas(animaux[i], movex[i], movey[i]);
+        //réduire l'hp de l'animal lorsqu'une balle le touche
+        hpdunanimal[i] -= degats;
+        if (hpdunanimal[i] <= 0) {
+          //mort de l'animal
+          if (premiermeurtre[i]) {
+            premiermeurtre[i] = false;
             minions_killed++;
-            // increase your cash a little bit
+            //augmentation de points 
             pointsactuels += minionreward();
             scoreactuel++;
-            if (minions_killed == (minions.length - lives_lost)) {
-              // wave over!
+            if (minions_killed == (animaux.length - viesperdues)) {
+              //fin de la vague
               wave_over = true;
             }
           }
-          minions[i].style.display = "none";
+          animaux[i].style.display = "none";
         }
         // stagger the minions coming out, release one every 15 pixels
-        if ((minion_release[i] == 100 * minion_c) && minion_c < minions.length) {
+        if ((lachementdanimaux[i] == 100 * minion_c) && minion_c < animaux.length) {
           minion_c++;
         }
-        minion_release[i]++;
+        lachementdanimaux[i]++;
       }
       // update the status
       updateStatus();
@@ -437,14 +437,14 @@ function debutdelavague(evt) {
         minions_killed = 0;
         wave_over = false;
         vagues++;
-        for (var i = 0; i < minions.length; i++) {
+        for (var i = 0; i < animaux.length; i++) {
           movex[i] = 0;
           movey[i] = 0;
           currentDir[i] = SUD;
-          minion_release[i] = 0;
-          minions[i].style.display = "none";
-          minion_hp[i] = minionhp();
-          first_kill[i] = true;
+          lachementdanimaux[i] = 0;
+          animaux[i].style.display = "none";
+          hpdunanimal[i] = minionhp();
+          premiermeurtre[i] = true;
         }
       }
     }
@@ -516,9 +516,9 @@ function resetwave(evt) {
   clearInterval(intervalle);
 
   // remove all the minions	
-  var minions = document.querySelectorAll(".minion");
-  for (var i = 0; i < minions.length; i++) {
-    document.body.removeChild(minions[i]);
+  var animaux = document.querySelectorAll(".animal");
+  for (var i = 0; i < animaux.length; i++) {
+    document.body.removeChild(animaux[i]);
   }
 
 }
@@ -538,34 +538,34 @@ function updateStatus() {
   lives.innerHTML = vies;
 
   // highlight turrets we can purchase
-  var turrets = document.getElementsByClassName("canon");
-  for (var i = 0; i < turrets.length; i++) {
-    if (pointsactuels >= prixcanon(turrets[i].id)) {
-      turrets[i].style.opacity = 1;
+  var canons = document.getElementsByClassName("canon");
+  for (var i = 0; i < canons.length; i++) {
+    if (pointsactuels >= prixcanon(canons[i].id)) {
+      canons[i].style.opacity = 1;
     } else {
-      turrets[i].style.opacity = 0.5;
+      canons[i].style.opacity = 0.5;
     }
   }
 }
 
-function anyTurretsInRange(minion, x, y) {
+function canonsprochesoupas(animal, x, y) {
   var score = document.getElementById("score");
-  var damage = 0;
+  var degats = 0;
   for (var i = 0; i < nombredecanons; i++) {
     // get the x and y positions of the turret
     var xt = positioncanon[i][2];
     var yt = positioncanon[i][3];
 
     if (euclidDistance(x, xt, y, yt) <= positioncanon[i][0]) {
-      minion.style.backgroundColor = "#FF0000";
-      damage += positioncanon[i][1]; // return the damage
+      animal.style.backgroundColor = "#FF0000";
+      degats += positioncanon[i][1]; // return the damage
     }
   }
-  if (damage == 0) {
+  if (degats == 0) {
     // nothing in range
-    minion.style.backgroundColor = "#000000";
+    animal.style.backgroundColor = "#000000";
   }
-  return damage;
+  return degats;
 }
 
 function euclidDistance(x1, x2, y1, y2) {

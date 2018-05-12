@@ -36,11 +36,11 @@
 }
 
 .bouttonpourcommencer {
-  background-color: #4682B4;
+  background-color: #a500ff;
   position: absolute;
   width: 100px;
   height: 50px;
-  color: #FFFFFF;
+  color: #FFA500;
   text-align: center;
   -moz-border-radius: 15px;
   -webkit-border-radius: 15px;
@@ -48,12 +48,12 @@
   left: 20px;
 }
 
-.resetbutton {
-  background-color: #4682B4;
+.bouttonpourreinitialiser {
+  background-color: #a500ff;
   position: absolute;
   width: 100px;
   height: 50px;
-  color: #FFFFFF;
+  color: #FFA500;
   text-align: center;
   -moz-border-radius: 15px;
   -webkit-border-radius: 15px;
@@ -61,12 +61,12 @@
   left: 20px;
 }
 
-.statusbar {
-  background-color: #4682B4;
+.infosdujoueur {
+  background-color: #a500ff;
   position: absolute;
   width: 400px;
   height: 50px;
-  color: #FFFFFF;
+  color: #FFA500;
   text-align: center;
   -moz-border-radius: 15px;
   -webkit-border-radius: 15px;
@@ -74,7 +74,7 @@
   left: 500px;
 }
 
-.minion {
+.animal {
   background-color: #000000;
   position: absolute;
   width: 15px;
